@@ -1,6 +1,7 @@
 [versions]
 activityComposeVersion = "1.7.2"
 agp = "8.7.2"
+artifactid = "version"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -11,6 +12,8 @@ activityCompose = "1.9.3"
 composeBom = "2024.04.01"
 lifecycleRuntimeKtxVersion = "2.6.1"
 material = "1.7.5"
+roomCompiler = "2.6.1"
+roomCompilerVersion = "2.5.2"
 roomRuntime = "2.6.1"
 ui = "1.7.5"
 uiToolingPreview = "1.7.5"
@@ -20,8 +23,11 @@ androidx-activity-compose-v172 = { module = "androidx.activity:activity-compose"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx-v261 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+androidx-room-compiler-v252 = { module = "androidx.room:room-compiler", version.ref = "roomCompilerVersion" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+artifactid = { module = "groupId:artifactId", version.ref = "artifactid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
