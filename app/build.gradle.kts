@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "org.iesharia.fabioroom"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "org.iesharia.fabioroom"
