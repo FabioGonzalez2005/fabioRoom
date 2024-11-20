@@ -1,4 +1,4 @@
-package org.iesharia.fabioroom
+package org.iesharia.fabioroom.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class Task(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val name: String,
-    val isCompleted: Boolean = false
+    val titulo: String,
+    val descripcion: Boolean = false,
+    val id_tipostareas: Int
 )

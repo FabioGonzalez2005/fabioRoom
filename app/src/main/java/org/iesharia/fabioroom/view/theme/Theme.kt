@@ -1,4 +1,4 @@
-package org.iesharia.fabioroom.ui.theme
+package org.iesharia.fabioroom.view.theme
 
 import android.app.Activity
 import android.os.Build

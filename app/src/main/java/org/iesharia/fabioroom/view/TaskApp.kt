@@ -1,4 +1,4 @@
-package org.iesharia.fabioroom
+package org.iesharia.fabioroom.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -7,6 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.iesharia.fabioroom.data.AppDatabase
+import org.iesharia.fabioroom.data.Task
 
 @Composable
 fun TaskApp(database: AppDatabase) {

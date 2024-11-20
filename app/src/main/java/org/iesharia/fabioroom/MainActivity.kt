@@ -3,9 +3,8 @@ package org.iesharia.fabioroom
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
+import org.iesharia.fabioroom.data.AppDatabase
+import org.iesharia.fabioroom.view.TaskApp
 
 class MainActivity : ComponentActivity() {
 
@@ -22,3 +21,5 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+

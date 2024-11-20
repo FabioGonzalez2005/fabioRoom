@@ -1,4 +1,4 @@
-package org.iesharia.fabioroom
+package org.iesharia.fabioroom.data
 
 import android.content.Context
 import androidx.room.Database

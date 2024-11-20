@@ -1,4 +1,4 @@
-package org.iesharia.fabioroom.ui.theme
+package org.iesharia.fabioroom.view.theme
 
 import androidx.compose.ui.graphics.Color
 

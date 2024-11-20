@@ -1,4 +1,4 @@
-package org.iesharia.fabioroom
+package org.iesharia.fabioroom.data
 
 import androidx.room.*
 
