@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.iesharia.fabioroom.data.AppDatabase
 import org.iesharia.fabioroom.data.Task
-import org.iesharia.fabioroom.data.TaskDao
 import org.iesharia.fabioroom.data.TiposTareas
 
 @Composable
@@ -49,7 +48,7 @@ fun TaskApp(database: AppDatabase) {
             onClick = {
                 scope.launch(Dispatchers.IO) {
                     // Verificar si el tipo de tarea existe, de lo contrario agregarlo
-                    val tipoTarea = TiposTareas(id = 2, titulo = "Tipo de tarea 2")
+                    val tipoTarea = TiposTareas(id = 2, titulo = "Trabajo")
                     tiposTareasDao.insert(tipoTarea)
 
                     // Obtener el id del tipo de tarea recién insertado
@@ -65,12 +64,12 @@ fun TaskApp(database: AppDatabase) {
                 }
             }
         ) {
-            androidx.compose.material.Text("Add Task")
+            Text("Add Task")
         }
 
         // Mostrar lista de tareas
         tasks.forEach { task ->
-            androidx.compose.material.Text(text = task.titulo)
+            Text(text = "Task: ${task.titulo}, ID: ${task.id}, Type ID: ${task.id_tipostareas}")
         }
     }
 }
