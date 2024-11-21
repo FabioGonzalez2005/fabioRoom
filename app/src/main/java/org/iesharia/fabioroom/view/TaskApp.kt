@@ -24,8 +24,8 @@ fun TaskApp(database: AppDatabase) {
     var tasks by remember { mutableStateOf(listOf<Task>()) }
     var tipos_tareas by remember { mutableStateOf(listOf<TiposTareas>()) }
     var newTaskName by remember { mutableStateOf("") }
-    var newTypeTaskName by remember { mutableStateOf("") }
     var newTaskTypeId by remember { mutableStateOf("") }
+    var newTypeTaskName by remember { mutableStateOf("") }
 
     // Cargar tareas y tipos de tareas al iniciar
     LaunchedEffect(Unit) {
@@ -102,14 +102,38 @@ fun TaskApp(database: AppDatabase) {
         }
 
         // Mostrar lista de tipos de tarea
-        tipos_tareas.forEach { tipos_tareas ->
-            Text(text = "Tipo: ${tipos_tareas.id}, Nombre: ${tipos_tareas.titulo}")
+        tipos_tareas.forEach { tipo ->
+            Column {
+                Text(text = "Tipo: ${tipo.id}, Nombre: ${tipo.titulo}")
+                Button(
+                    onClick = {
+                        scope.launch(Dispatchers.IO) {
+                            tiposTareasDao.delete(tipo)
+                            tipos_tareas = tiposTareasDao.getAllTiposTareas()
+                        }
+                    }
+                ) {
+                    Text("Eliminar tipo")
+                }
+            }
         }
 
         // Mostrar lista de tareas con sus tipos de tareas
         tasks.forEach { task ->
-            val tipoTareaTitulo = tipos_tareas.find { it.id == task.id_tipostareas }?.titulo ?: "Desconocido"
-            Text(text = "Tarea: ${task.titulo}, ID: ${task.id}, Tipo: $tipoTareaTitulo")
+            Column {
+                val tipoTareaTitulo = tipos_tareas.find { it.id == task.id_tipostareas }?.titulo ?: "Desconocido"
+                Text(text = "Tarea: ${task.titulo}, ID: ${task.id}, Tipo: $tipoTareaTitulo")
+                Button(
+                    onClick = {
+                        scope.launch(Dispatchers.IO) {
+                            taskDao.delete(task)
+                            tasks = taskDao.getAllTasks()
+                        }
+                    }
+                ) {
+                    Text("Eliminar tarea")
+                }
+            }
         }
     }
 }
