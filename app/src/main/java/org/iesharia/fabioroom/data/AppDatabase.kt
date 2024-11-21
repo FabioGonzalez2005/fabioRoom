@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase
 @Database(entities = [Task::class, TiposTareas::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
+    abstract fun tiposTareasDao(): TiposTareasDao
 
     companion object {
         @Volatile
