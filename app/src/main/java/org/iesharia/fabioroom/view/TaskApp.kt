@@ -1,6 +1,8 @@
-package org.iesharia.fabioroom.view
+package org.iesharia.fabioroom
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +16,7 @@ import org.iesharia.fabioroom.data.Task
 fun TaskApp(database: AppDatabase) {
     val taskDao = database.taskDao()
     val scope = rememberCoroutineScope()
+
     var tasks by remember { mutableStateOf(listOf<Task>()) }
     var newTaskName by remember { mutableStateOf("") }
 
@@ -30,18 +33,20 @@ fun TaskApp(database: AppDatabase) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Campo de texto para agregar una nueva tarea
-        androidx.compose.material.OutlinedTextField(
+        OutlinedTextField(
             value = newTaskName,
             onValueChange = { newTaskName = it },
             label = { androidx.compose.material.Text("New Task") },
             modifier = Modifier.fillMaxWidth()
         )
 
+
+
         // Botón para agregar tarea
-        androidx.compose.material.Button(
+        Button(
             onClick = {
                 scope.launch(Dispatchers.IO) {
-                    val newTask = Task(name = newTaskName)
+                    val newTask = Task(id = 2, titulo = newTaskName, id_tipostareas = 2)
                     taskDao.insert(newTask)
                     tasks = taskDao.getAllTasks() // Actualizar la lista
                     newTaskName = "" // Limpiar el campo
@@ -53,7 +58,7 @@ fun TaskApp(database: AppDatabase) {
 
         // Mostrar lista de tareas
         tasks.forEach { task ->
-            androidx.compose.material.Text(text = task.name)
+            androidx.compose.material.Text(text = task.titulo)
         }
     }
 }
