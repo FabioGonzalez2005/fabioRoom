@@ -16,3 +16,18 @@ interface TaskDao {
     @Delete
     suspend fun delete(task: Task)
 }
+
+@Dao
+interface TiposTareasDao {
+    @Insert
+    suspend fun insert(tipoTarea: TiposTareas)
+
+    @Query("SELECT * FROM tipos_tareas")
+    suspend fun getAllTiposTareas(): List<TiposTareas>
+
+    @Update
+    suspend fun update(tipoTarea: TiposTareas)
+
+    @Delete
+    suspend fun delete(tipoTarea: TiposTareas)
+}
