@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "tipos_tareas")
 data class TiposTareas(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val titulo: String
 )
