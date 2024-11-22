@@ -2,6 +2,9 @@ package org.iesharia.fabioroom
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -24,8 +27,9 @@ fun TaskApp(database: AppDatabase) {
     var tasks by remember { mutableStateOf(listOf<Task>()) }
     var tipos_tareas by remember { mutableStateOf(listOf<TiposTareas>()) }
     var newTaskName by remember { mutableStateOf("") }
-    var newTaskTypeId by remember { mutableStateOf("") }
+    var selectedTaskType by remember { mutableStateOf<TiposTareas?>(null) }
     var newTypeTaskName by remember { mutableStateOf("") }
+    var dropdownExpanded by remember { mutableStateOf(false) }
 
     // Cargar tareas y tipos de tareas al iniciar
     LaunchedEffect(Unit) {
@@ -58,53 +62,81 @@ fun TaskApp(database: AppDatabase) {
                         newTypeTaskName = ""
                     }
                 }
-            }
+            },
+            modifier = Modifier.padding(top = 8.dp)
         ) {
             Text("Agregar tipo de tarea")
         }
 
-        // Campos de texto para agregar una nueva tarea
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            OutlinedTextField(
-                value = newTaskName,
-                onValueChange = { newTaskName = it },
-                label = { Text("Nombre de la tarea") },
-                modifier = Modifier.weight(1f)
-            )
+        Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedTextField(
-                value = newTaskTypeId,
-                onValueChange = { newTaskTypeId = it },
-                label = { Text("ID del tipo") },
-                modifier = Modifier.weight(1f)
-            )
+        // Campos para agregar una nueva tarea
+        OutlinedTextField(
+            value = newTaskName,
+            onValueChange = { newTaskName = it },
+            label = { Text("Nombre de la tarea") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Menú desplegable para seleccionar tipo de tarea
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = { dropdownExpanded = true },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = selectedTaskType?.titulo ?: "Selecciona un tipo de tarea")
+            }
+            DropdownMenu(
+                expanded = dropdownExpanded,
+                onDismissRequest = { dropdownExpanded = false }
+            ) {
+                tipos_tareas.forEach { tipo ->
+                    DropdownMenuItem(
+                        onClick = {
+                            selectedTaskType = tipo
+                            dropdownExpanded = false
+                        }
+                    ) {
+                        Text(text = tipo.titulo)
+                    }
+                }
+            }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Botón para agregar tarea
         Button(
             onClick = {
                 scope.launch(Dispatchers.IO) {
-                    val tipoTareaId = newTaskTypeId.toIntOrNull()
-                    if (!newTaskName.isNullOrEmpty() && tipoTareaId != null) {
-                        val newTask = Task(id = 0, titulo = newTaskName, id_tipostareas = tipoTareaId)
+                    if (!newTaskName.isNullOrEmpty() && selectedTaskType != null) {
+                        val newTask = Task(id = 0, titulo = newTaskName, id_tipostareas = selectedTaskType!!.id)
                         taskDao.insert(newTask)
                         tasks = taskDao.getAllTasks()
                         newTaskName = ""
-                        newTaskTypeId = ""
+                        selectedTaskType = null
                     }
                 }
-            }
+            },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = selectedTaskType != null && newTaskName.isNotEmpty()
         ) {
             Text("Agregar tarea")
         }
 
+        Spacer(modifier = Modifier.height(24.dp))
+
         // Mostrar lista de tipos de tarea
+        Text("Tipos de tarea:", style = MaterialTheme.typography.h6)
         tipos_tareas.forEach { tipo ->
-            Column {
-                Text(text = "Tipo: ${tipo.id}, Nombre: ${tipo.titulo}")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "ID: ${tipo.id}, Nombre: ${tipo.titulo}")
                 Button(
                     onClick = {
                         scope.launch(Dispatchers.IO) {
@@ -113,16 +145,23 @@ fun TaskApp(database: AppDatabase) {
                         }
                     }
                 ) {
-                    Text("Eliminar tipo")
+                    Text("Eliminar")
                 }
             }
         }
 
-        // Mostrar lista de tareas con sus tipos de tareas
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Mostrar lista de tareas
+        Text("Tareas:", style = MaterialTheme.typography.h6)
         tasks.forEach { task ->
-            Column {
-                val tipoTareaTitulo = tipos_tareas.find { it.id == task.id_tipostareas }?.titulo ?: "Desconocido"
-                Text(text = "Tarea: ${task.titulo}, ID: ${task.id}, Tipo: $tipoTareaTitulo")
+            val tipoTareaTitulo = tipos_tareas.find { it.id == task.id_tipostareas }?.titulo ?: "Desconocido"
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "Tarea: ${task.titulo}, Tipo: $tipoTareaTitulo")
                 Button(
                     onClick = {
                         scope.launch(Dispatchers.IO) {
@@ -131,12 +170,9 @@ fun TaskApp(database: AppDatabase) {
                         }
                     }
                 ) {
-                    Text("Eliminar tarea")
+                    Text("Eliminar")
                 }
             }
         }
     }
 }
-
-
-
