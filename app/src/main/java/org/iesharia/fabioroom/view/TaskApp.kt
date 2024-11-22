@@ -1,5 +1,6 @@
 package org.iesharia.fabioroom
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.DropdownMenu
@@ -10,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,6 +42,7 @@ fun TaskApp(database: AppDatabase) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color(0xFFADD8E6))
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
