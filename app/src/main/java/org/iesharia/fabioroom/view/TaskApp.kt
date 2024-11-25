@@ -187,11 +187,8 @@ fun TaskApp(database: AppDatabase) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    Row {
-                        Text(text = tipo.id.toString(), style = MaterialTheme.typography.body1)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = tipo.titulo, style = MaterialTheme.typography.h6)
-                    }
+                    Text(text = tipo.titulo, style = MaterialTheme.typography.h6)
+                    Text(text = "ID: ${tipo.id}", style = MaterialTheme.typography.body1)
                 }
                 Row {
                     Button(onClick = {
