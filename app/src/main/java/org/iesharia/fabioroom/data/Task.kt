@@ -18,6 +18,7 @@ import androidx.room.PrimaryKey
 data class Task(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    var descripcion: String,
     var titulo: String,
     var id_tipostareas: Int
 )
