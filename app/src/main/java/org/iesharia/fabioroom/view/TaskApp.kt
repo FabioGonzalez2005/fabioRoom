@@ -34,6 +34,7 @@ fun TaskApp(database: AppDatabase) {
     var editingTaskDescription by remember { mutableStateOf("") }
     var editingTipoTarea by remember { mutableStateOf<TiposTareas?>(null) }
     var editingTipoTareaName by remember { mutableStateOf("") }
+
     // Cargar tareas y tipos de tareas al iniciar
     LaunchedEffect(Unit) {
         try {
@@ -43,6 +44,7 @@ fun TaskApp(database: AppDatabase) {
             e.printStackTrace()
         }
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,6 +52,9 @@ fun TaskApp(database: AppDatabase) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Título para Tipos de Tarea
+        Text(text = "Tipos de tarea", style = MaterialTheme.typography.h5, modifier = Modifier.padding(bottom = 8.dp))
+
         OutlinedTextField(
             value = if (editingTipoTarea != null) editingTipoTareaName else newTypeTaskName,
             onValueChange = {
@@ -58,6 +63,7 @@ fun TaskApp(database: AppDatabase) {
             label = { Text(if (editingTipoTarea != null) "Editar tipo de tarea" else "Nombre del tipo") },
             modifier = Modifier.fillMaxWidth()
         )
+
         Button(
             onClick = {
                 scope.launch(Dispatchers.IO) {
@@ -84,7 +90,41 @@ fun TaskApp(database: AppDatabase) {
         ) {
             Text(if (editingTipoTarea != null) "Guardar cambios" else "Agregar tipo de tarea")
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Listado de tipos de tareas
+        tipos_tareas.forEach { tipo ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = tipo.titulo, style = MaterialTheme.typography.h6)
+                Row {
+                    Button(onClick = {
+                        editingTipoTarea = tipo
+                        editingTipoTareaName = tipo.titulo
+                    }) { Icon(Icons.Default.Edit, contentDescription = "Editar") }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Button(onClick = {
+                        scope.launch(Dispatchers.IO) {
+                            try {
+                                tiposTareasDao.delete(tipo)
+                                tipos_tareas = tiposTareasDao.getAllTiposTareas()
+                                tasks = taskDao.getAllTasks()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }) { Icon(Icons.Default.Close, contentDescription = "Eliminar") }
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Tareas", style = MaterialTheme.typography.h5, modifier = Modifier.padding(vertical = 8.dp))
         OutlinedTextField(
             value = if (editingTask != null) editingTaskName else newTaskName,
             onValueChange = {
@@ -93,7 +133,8 @@ fun TaskApp(database: AppDatabase) {
             label = { Text(if (editingTask != null) "Editar tarea" else "Nombre de la tarea") },
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(8.dp))
+
+        Spacer(modifier = Modifier.height(4.dp))
         OutlinedTextField(
             value = if (editingTask != null) editingTaskDescription else newTaskDescription,
             onValueChange = {
@@ -102,7 +143,8 @@ fun TaskApp(database: AppDatabase) {
             label = { Text(if (editingTask != null) "Editar descripción" else "Descripción de la tarea") },
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(8.dp))
+
+        Spacer(modifier = Modifier.height(4.dp))
         Box(modifier = Modifier.fillMaxWidth()) {
             Button(
                 onClick = { dropdownExpanded = true },
@@ -126,7 +168,8 @@ fun TaskApp(database: AppDatabase) {
                 }
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(4.dp))
         Button(
             onClick = {
                 scope.launch(Dispatchers.IO) {
@@ -165,43 +208,14 @@ fun TaskApp(database: AppDatabase) {
         ) {
             Text(if (editingTask != null) "Guardar cambios" else "Agregar tarea")
         }
-        Spacer(modifier = Modifier.height(24.dp))
-        tipos_tareas.forEach { tipo ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = tipo.titulo, style = MaterialTheme.typography.h6)
-                Row {
-                    Button(onClick = {
-                        editingTipoTarea = tipo
-                        editingTipoTareaName = tipo.titulo
-                    }) { Icon(Icons.Default.Edit, contentDescription = "Editar") }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(onClick = {
-                        scope.launch(Dispatchers.IO) {
-                            try {
-                                tiposTareasDao.delete(tipo)
-                                tipos_tareas = tiposTareasDao.getAllTiposTareas()
-                                tasks = taskDao.getAllTasks()
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }) { Icon(Icons.Default.Close, contentDescription = "Eliminar") }
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(24.dp))
+
+        // Listado de tareas
         tasks.forEach { task ->
             val tipoTareaTitulo = tipos_tareas.find { it.id == task.id_tipostareas }?.titulo ?: "Desconocido"
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp),
+                    .padding(vertical = 4.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
