@@ -2,12 +2,10 @@ package org.iesharia.fabioroom
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,12 +27,14 @@ fun TaskApp(database: AppDatabase) {
     var tasks by remember { mutableStateOf(listOf<Task>()) }
     var tipos_tareas by remember { mutableStateOf(listOf<TiposTareas>()) }
     var newTaskName by remember { mutableStateOf("") }
+    var newTaskDescription by remember { mutableStateOf("") }
     var selectedTaskType by remember { mutableStateOf<TiposTareas?>(null) }
     var newTypeTaskName by remember { mutableStateOf("") }
     var dropdownExpanded by remember { mutableStateOf(false) }
 
     var editingTask by remember { mutableStateOf<Task?>(null) }
     var editingTaskName by remember { mutableStateOf("") }
+    var editingTaskDescription by remember { mutableStateOf("") }
 
     var editingTipoTarea by remember { mutableStateOf<TiposTareas?>(null) }
     var editingTipoTareaName by remember { mutableStateOf("") }
@@ -100,6 +100,17 @@ fun TaskApp(database: AppDatabase) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        OutlinedTextField(
+            value = if (editingTask != null) editingTaskDescription else newTaskDescription,
+            onValueChange = {
+                if (editingTask != null) editingTaskDescription = it else newTaskDescription = it
+            },
+            label = { Text(if (editingTask != null) "Editar descripción" else "Descripción de la tarea") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         // Menú desplegable para seleccionar tipo de tarea
         Box(modifier = Modifier.fillMaxWidth()) {
             Button(
@@ -134,23 +145,31 @@ fun TaskApp(database: AppDatabase) {
                     if (editingTask != null) {
                         editingTask?.let {
                             it.titulo = editingTaskName
+                            it.descripcion = editingTaskDescription
                             it.id_tipostareas = selectedTaskType?.id ?: it.id_tipostareas
                             taskDao.update(it)
                         }
                         editingTask = null
                         editingTaskName = ""
+                        editingTaskDescription = ""
                         selectedTaskType = null
                     } else if (newTaskName.isNotEmpty() && selectedTaskType != null) {
-                        val newTask = Task(id = 0, titulo = newTaskName, id_tipostareas = selectedTaskType!!.id)
+                        val newTask = Task(
+                            id = 0,
+                            titulo = newTaskName,
+                            descripcion = newTaskDescription,
+                            id_tipostareas = selectedTaskType!!.id
+                        )
                         taskDao.insert(newTask)
                         newTaskName = ""
+                        newTaskDescription = ""
                         selectedTaskType = null
                     }
                     tasks = taskDao.getAllTasks()
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = (editingTask != null || (selectedTaskType != null && newTaskName.isNotEmpty()))
+            enabled = (editingTask != null || (selectedTaskType != null && newTaskName.isNotEmpty() && newTaskDescription.isNotEmpty()))
         ) {
             Text(if (editingTask != null) "Guardar cambios" else "Agregar tarea")
         }
@@ -170,14 +189,15 @@ fun TaskApp(database: AppDatabase) {
                     Button(onClick = {
                         editingTipoTarea = tipo
                         editingTipoTareaName = tipo.titulo
-                    }) { Text("Editar") }
+                    }) { Icon(Icons.Default.Edit, contentDescription = "Editar") }
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(onClick = {
                         scope.launch(Dispatchers.IO) {
                             tiposTareasDao.delete(tipo)
                             tipos_tareas = tiposTareasDao.getAllTiposTareas()
+                            tasks = taskDao.getAllTasks()
                         }
-                    }) { Text("Eliminar") }
+                    }) { Icon(Icons.Default.Close, contentDescription = "Eliminar") }
                 }
             }
         }
@@ -188,25 +208,24 @@ fun TaskApp(database: AppDatabase) {
         Text("Tareas:", style = MaterialTheme.typography.h6)
         tasks.forEach { task ->
             val tipoTareaTitulo = tipos_tareas.find { it.id == task.id_tipostareas }?.titulo ?: "Desconocido"
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Tarea: ${task.titulo}, Tipo: $tipoTareaTitulo")
-                Row {
+            Column(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+                Text(text = "Tarea: ${task.titulo}", style = MaterialTheme.typography.body1)
+                Text(text = "Descripción: ${task.descripcion}", style = MaterialTheme.typography.body2, color = Color.Gray)
+                Text(text = "Tipo: $tipoTareaTitulo", style = MaterialTheme.typography.body2)
+                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                     Button(onClick = {
                         editingTask = task
                         editingTaskName = task.titulo
+                        editingTaskDescription = task.descripcion
                         selectedTaskType = tipos_tareas.find { it.id == task.id_tipostareas }
-                    }) { Text("Editar") }
+                    }) { Icon(Icons.Default.Edit, contentDescription = "Editar") }
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(onClick = {
                         scope.launch(Dispatchers.IO) {
                             taskDao.delete(task)
                             tasks = taskDao.getAllTasks()
                         }
-                    }) { Text("Eliminar") }
+                    }) { Icon(Icons.Default.Close, contentDescription = "Eliminar") }
                 }
             }
         }
