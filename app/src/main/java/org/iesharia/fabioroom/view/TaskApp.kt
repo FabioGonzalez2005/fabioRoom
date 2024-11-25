@@ -187,7 +187,6 @@ fun TaskApp(database: AppDatabase) {
             ) {
                 Column {
                     Text(text = tipo.titulo, style = MaterialTheme.typography.h6)
-                    Text(text = "ID: ${tipo.id}", style = MaterialTheme.typography.body1)
                 }
                 Row {
                     Button(onClick = {
