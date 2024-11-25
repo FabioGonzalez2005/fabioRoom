@@ -15,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.iesharia.fabioroom.data.AppDatabase
 import org.iesharia.fabioroom.data.Task
-import org.iesharia.fabioroom.data.TaskDao
 import org.iesharia.fabioroom.data.TiposTareas
 
 @Composable
