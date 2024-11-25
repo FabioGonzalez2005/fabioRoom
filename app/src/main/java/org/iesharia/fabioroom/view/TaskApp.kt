@@ -208,26 +208,40 @@ fun TaskApp(database: AppDatabase) {
         Text("Tareas:", style = MaterialTheme.typography.h6)
         tasks.forEach { task ->
             val tipoTareaTitulo = tipos_tareas.find { it.id == task.id_tipostareas }?.titulo ?: "Desconocido"
-            Column(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
-                Text(text = "Tarea: ${task.titulo}", style = MaterialTheme.typography.body1)
-                Text(text = "Descripción: ${task.descripcion}", style = MaterialTheme.typography.body2, color = Color.Gray)
-                Text(text = "Tipo: $tipoTareaTitulo", style = MaterialTheme.typography.body2)
-                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                    Button(onClick = {
-                        editingTask = task
-                        editingTaskName = task.titulo
-                        editingTaskDescription = task.descripcion
-                        selectedTaskType = tipos_tareas.find { it.id == task.id_tipostareas }
-                    }) { Icon(Icons.Default.Edit, contentDescription = "Editar") }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(onClick = {
-                        scope.launch(Dispatchers.IO) {
-                            taskDao.delete(task)
-                            tasks = taskDao.getAllTasks()
-                        }
-                    }) { Icon(Icons.Default.Close, contentDescription = "Eliminar") }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row {
+                    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                        Text(text = " ${task.titulo}", style = MaterialTheme.typography.body1)
+                        Text(
+                            text = " ${task.descripcion}",
+                            style = MaterialTheme.typography.body2,
+                            color = Color.Gray
+                        )
+                        Text(text = " $tipoTareaTitulo", style = MaterialTheme.typography.body2)
+                    }
                 }
-            }
+                    Row {
+                        Button(onClick = {
+                            editingTask = task
+                            editingTaskName = task.titulo
+                            editingTaskDescription = task.descripcion
+                            selectedTaskType = tipos_tareas.find { it.id == task.id_tipostareas }
+                        }) { Icon(Icons.Default.Edit, contentDescription = "Editar") }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(onClick = {
+                            scope.launch(Dispatchers.IO) {
+                                taskDao.delete(task)
+                                tasks = taskDao.getAllTasks()
+                            }
+                        }) { Icon(Icons.Default.Close, contentDescription = "Eliminar") }
+                    }
+                }
         }
     }
 }
