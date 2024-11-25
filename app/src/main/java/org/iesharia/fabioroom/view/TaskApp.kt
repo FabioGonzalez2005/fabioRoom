@@ -180,11 +180,19 @@ fun TaskApp(database: AppDatabase) {
         Text("Tipos de tarea:", style = MaterialTheme.typography.h6)
         tipos_tareas.forEach { tipo ->
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "ID: ${tipo.id}, Nombre: ${tipo.titulo}")
+                Column {
+                    Row {
+                        Text(text = tipo.id.toString(), style = MaterialTheme.typography.body1)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = tipo.titulo, style = MaterialTheme.typography.h6)
+                    }
+                }
                 Row {
                     Button(onClick = {
                         editingTipoTarea = tipo
@@ -217,10 +225,10 @@ fun TaskApp(database: AppDatabase) {
             ) {
                 Row {
                     Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                        Text(text = " ${task.titulo}", style = MaterialTheme.typography.body1)
+                        Text(text = " ${task.titulo}", style = MaterialTheme.typography.h6)
                         Text(
                             text = " ${task.descripcion}",
-                            style = MaterialTheme.typography.body2,
+                            style = MaterialTheme.typography.body1,
                             color = Color.Gray
                         )
                         Text(text = " $tipoTareaTitulo", style = MaterialTheme.typography.body2)
