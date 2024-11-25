@@ -22,7 +22,6 @@ fun TaskApp(database: AppDatabase) {
     val taskDao = database.taskDao()
     val tiposTareasDao = database.tiposTareasDao()
     val scope = rememberCoroutineScope()
-
     var tasks by remember { mutableStateOf(listOf<Task>()) }
     var tipos_tareas by remember { mutableStateOf(listOf<TiposTareas>()) }
     var newTaskName by remember { mutableStateOf("") }
@@ -30,14 +29,11 @@ fun TaskApp(database: AppDatabase) {
     var selectedTaskType by remember { mutableStateOf<TiposTareas?>(null) }
     var newTypeTaskName by remember { mutableStateOf("") }
     var dropdownExpanded by remember { mutableStateOf(false) }
-
     var editingTask by remember { mutableStateOf<Task?>(null) }
     var editingTaskName by remember { mutableStateOf("") }
     var editingTaskDescription by remember { mutableStateOf("") }
-
     var editingTipoTarea by remember { mutableStateOf<TiposTareas?>(null) }
     var editingTipoTareaName by remember { mutableStateOf("") }
-
     // Cargar tareas y tipos de tareas al iniciar
     LaunchedEffect(Unit) {
         try {
@@ -47,7 +43,6 @@ fun TaskApp(database: AppDatabase) {
             e.printStackTrace()
         }
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,7 +58,6 @@ fun TaskApp(database: AppDatabase) {
             label = { Text(if (editingTipoTarea != null) "Editar tipo de tarea" else "Nombre del tipo") },
             modifier = Modifier.fillMaxWidth()
         )
-
         Button(
             onClick = {
                 scope.launch(Dispatchers.IO) {
@@ -90,9 +84,7 @@ fun TaskApp(database: AppDatabase) {
         ) {
             Text(if (editingTipoTarea != null) "Guardar cambios" else "Agregar tipo de tarea")
         }
-
         Spacer(modifier = Modifier.height(16.dp))
-
         OutlinedTextField(
             value = if (editingTask != null) editingTaskName else newTaskName,
             onValueChange = {
@@ -101,9 +93,7 @@ fun TaskApp(database: AppDatabase) {
             label = { Text(if (editingTask != null) "Editar tarea" else "Nombre de la tarea") },
             modifier = Modifier.fillMaxWidth()
         )
-
         Spacer(modifier = Modifier.height(8.dp))
-
         OutlinedTextField(
             value = if (editingTask != null) editingTaskDescription else newTaskDescription,
             onValueChange = {
@@ -112,9 +102,7 @@ fun TaskApp(database: AppDatabase) {
             label = { Text(if (editingTask != null) "Editar descripción" else "Descripción de la tarea") },
             modifier = Modifier.fillMaxWidth()
         )
-
         Spacer(modifier = Modifier.height(8.dp))
-
         Box(modifier = Modifier.fillMaxWidth()) {
             Button(
                 onClick = { dropdownExpanded = true },
@@ -138,9 +126,7 @@ fun TaskApp(database: AppDatabase) {
                 }
             }
         }
-
         Spacer(modifier = Modifier.height(16.dp))
-
         Button(
             onClick = {
                 scope.launch(Dispatchers.IO) {
@@ -179,9 +165,7 @@ fun TaskApp(database: AppDatabase) {
         ) {
             Text(if (editingTask != null) "Guardar cambios" else "Agregar tarea")
         }
-
         Spacer(modifier = Modifier.height(24.dp))
-
         tipos_tareas.forEach { tipo ->
             Row(
                 modifier = Modifier
@@ -211,9 +195,7 @@ fun TaskApp(database: AppDatabase) {
                 }
             }
         }
-
         Spacer(modifier = Modifier.height(24.dp))
-
         tasks.forEach { task ->
             val tipoTareaTitulo = tipos_tareas.find { it.id == task.id_tipostareas }?.titulo ?: "Desconocido"
             Row(
