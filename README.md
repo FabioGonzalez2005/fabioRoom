@@ -20,3 +20,6 @@ En esta aplicación se muestra la interfaz de un gestor de tareas, que te permit
 
 ## 🖌️ **Boceto de la Interfaz**  
 ![Boceto](boceto.png)
+
+## ✨  **Diseño final**  
+![Diseño](resultadoFinal.png)
