@@ -60,6 +60,7 @@ fun TaskApp(database: AppDatabase) {
             modifier = Modifier
                 .padding(bottom = 8.dp)
                 .border(width = 2.dp, color = Color.Black, shape = CircleShape)
+                .background(color = Color.White, shape = CircleShape)
                 .padding(16.dp)
         )
         OutlinedTextField(
