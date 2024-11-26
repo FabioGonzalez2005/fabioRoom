@@ -211,7 +211,7 @@ fun TaskApp(database: AppDatabase) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row {
-                    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                    Column(modifier = Modifier.padding(vertical = 2.dp)) {
                         Text(text = " ${task.titulo}", style = MaterialTheme.typography.h6)
                         Text(
                             text = " ${task.descripcion}",
