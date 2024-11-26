@@ -1,7 +1,9 @@
 package org.iesharia.fabioroom
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -52,7 +54,14 @@ fun TaskApp(database: AppDatabase) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Tipos de tarea", style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold), modifier = Modifier.padding(bottom = 8.dp))
+        Text(
+            text = "Tipos de tarea",
+            style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .border(width = 2.dp, color = Color.Black, shape = CircleShape)
+                .padding(16.dp)
+        )
         OutlinedTextField(
             value = if (editingTipoTarea != null) editingTipoTareaName else newTypeTaskName,
             onValueChange = {
@@ -119,7 +128,14 @@ fun TaskApp(database: AppDatabase) {
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Tareas", style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold), modifier = Modifier.padding(vertical = 8.dp))
+        Text(
+            text = "Tareas",
+            style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .border(width = 2.dp, color = Color.Black, shape = CircleShape)
+                .padding(16.dp)
+        )
         OutlinedTextField(
             value = if (editingTask != null) editingTaskName else newTaskName,
             onValueChange = {
