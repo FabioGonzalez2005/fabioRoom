@@ -58,10 +58,11 @@ fun TaskApp(database: AppDatabase) {
             text = "Tipos de tarea",
             style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
             modifier = Modifier
-                .padding(bottom = 8.dp)
-                .border(width = 2.dp, color = Color.Black, shape = CircleShape)
+                .padding(bottom = 2.dp)
+                .border(width = 1.dp, color = Color.Black, shape = CircleShape)
                 .background(color = Color.White, shape = CircleShape)
-                .padding(16.dp)
+                .padding(6.dp)
+                .padding(horizontal = 14.dp)
         )
         OutlinedTextField(
             value = if (editingTipoTarea != null) editingTipoTareaName else newTypeTaskName,
@@ -133,10 +134,11 @@ fun TaskApp(database: AppDatabase) {
             text = "Tareas",
             style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
             modifier = Modifier
-                .padding(vertical = 8.dp)
-                .border(width = 2.dp, color = Color.Black, shape = CircleShape)
+                .padding(vertical = 2.dp)
+                .border(width = 1.dp, color = Color.Black, shape = CircleShape)
                 .background(color = Color.White, shape = CircleShape)
-                .padding(16.dp)
+                .padding(6.dp)
+                .padding(horizontal = 14.dp)
         )
         OutlinedTextField(
             value = if (editingTask != null) editingTaskName else newTaskName,
