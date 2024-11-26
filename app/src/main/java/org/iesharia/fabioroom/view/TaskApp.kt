@@ -72,10 +72,17 @@ fun TaskApp(database: AppDatabase) {
             label = { Text(if (editingTipoTarea != null) "Editar tipo de tarea" else "Nombre del tipo") },
             modifier = Modifier.fillMaxWidth()
         )
+        // Guardar cambios de edición
         Button(
             onClick = {
                 scope.launch(Dispatchers.IO) {
                     try {
+                        var sameTitle = false
+                        tipos_tareas.forEach {
+                            if (it.titulo.lowercase() == newTypeTaskName.lowercase()) {
+                                sameTitle = true
+                            }
+                        }
                         if (editingTipoTarea != null) {
                             editingTipoTarea?.let {
                                 it.titulo = editingTipoTareaName
@@ -83,7 +90,7 @@ fun TaskApp(database: AppDatabase) {
                             }
                             editingTipoTarea = null
                             editingTipoTareaName = ""
-                        } else if (newTypeTaskName.isNotEmpty()) {
+                        } else if (newTypeTaskName.isNotEmpty() && !sameTitle) {
                             val newTypeTask = TiposTareas(titulo = newTypeTaskName)
                             tiposTareasDao.insert(newTypeTask)
                             newTypeTaskName = ""
