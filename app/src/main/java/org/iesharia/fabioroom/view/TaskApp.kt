@@ -110,11 +110,13 @@ fun TaskApp(database: AppDatabase) {
             ) {
                 Text(text = tipo.titulo, style = MaterialTheme.typography.h6)
                 Row {
+                    // Botón de editar tipo de tarea
                     Button(onClick = {
                         editingTipoTarea = tipo
                         editingTipoTareaName = tipo.titulo
                     }) { Icon(Icons.Default.Edit, contentDescription = "Editar") }
                     Spacer(modifier = Modifier.width(8.dp))
+                    // Botón de eliminar tipo de tarea
                     Button(onClick = {
                         scope.launch(Dispatchers.IO) {
                             try {
@@ -140,6 +142,7 @@ fun TaskApp(database: AppDatabase) {
                 .padding(6.dp)
                 .padding(horizontal = 14.dp)
         )
+        // Edición de tarea
         OutlinedTextField(
             value = if (editingTask != null) editingTaskName else newTaskName,
             onValueChange = {
@@ -158,6 +161,7 @@ fun TaskApp(database: AppDatabase) {
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(4.dp))
+        // Seleccionar tipo de tarea
         Box(modifier = Modifier.fillMaxWidth()) {
             Button(
                 onClick = { dropdownExpanded = true },
@@ -182,6 +186,7 @@ fun TaskApp(database: AppDatabase) {
             }
         }
         Spacer(modifier = Modifier.height(4.dp))
+        // Guardar los cambios de la edición
         Button(
             onClick = {
                 scope.launch(Dispatchers.IO) {
@@ -242,6 +247,7 @@ fun TaskApp(database: AppDatabase) {
                     }
                 }
                 Row {
+                    // Botón de editar tarea
                     Button(onClick = {
                         editingTask = task
                         editingTaskName = task.titulo
@@ -249,6 +255,7 @@ fun TaskApp(database: AppDatabase) {
                         selectedTaskType = tipos_tareas.find { it.id == task.id_tipostareas }
                     }) { Icon(Icons.Default.Edit, contentDescription = "Editar") }
                     Spacer(modifier = Modifier.width(8.dp))
+                    // Botón de eliminar tarea
                     Button(onClick = {
                         scope.launch(Dispatchers.IO) {
                             try {
