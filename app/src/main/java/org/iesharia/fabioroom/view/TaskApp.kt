@@ -34,6 +34,7 @@ fun TaskApp(database: AppDatabase) {
     var editingTaskName by remember { mutableStateOf("") }
     var editingTaskDescription by remember { mutableStateOf("") }
     var editingTipoTarea by remember { mutableStateOf<TiposTareas?>(null) }
+    var editingTipoTareaName by remember { mutableStateOf("") }
 
     // Cargar tareas y tipos de tareas al iniciar
     LaunchedEffect(Unit) {
